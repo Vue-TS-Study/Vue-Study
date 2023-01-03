@@ -27,8 +27,8 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-    <ul>
-      <li v-for="loop in loopi" :key="loop" v-on:click="onClick" class="clickable">
+    <ul ref="ul">
+      <li v-for="loop in loopi" :key="loop" @click="onClick($event,'hello')" class="clickable" @mouseover="onMouseover">
         {{loop}}
       </li>
       <h3>{{num}}</h3>
@@ -51,10 +51,28 @@ export default {
       }
   },
   methods: {
-    onClick (){ //onClick : function onClick(){} 에서 이렇게 줄여서 사용 가능
-      console.log("You clicked") //화살표 함수는 사용 불가
+    onClick (e,msg){ //onClick : function onClick(){} 에서 이렇게 줄여서 사용 가능
+      console.log(msg+"You clicked " +e) //화살표 함수는 사용 불가
+    }, 
+    onMouseover(e){
+      console.log(e) //이게 왜,,,, onClick에서 주지도 않았
     }
   },
+  beforeCreate(){
+    console.log(this.num,"undefined yet")
+  },
+
+  beforeMount(){
+    console.log(this.num,"finally defined but still component is not mounetd",this.$refs.ul)
+  },
+  mounted(){
+    console.log("mounted")
+  },
+  beforeUnmount() {
+    console.log("will unmount")
+  },
+  //before update는 Update되기 전 상태를 말함(snapshot을 찍는 것처럼)
+  //before -- 은 모두.
 }
 </script>
 
